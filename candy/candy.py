@@ -45,12 +45,10 @@ def candycount(list):
     actualItems.append(int(value))
     Sean += value
 
-# for line in input:
-#   if not first:
-#     array = line.split()
-#     if len(array) > 1:
-#       candycount(array)
-#   else:
-#     first = False
-
-print(badadd("1100","101"))
+for line in input:
+  if not first:
+    array = line.split()
+    if len(array) > 1:
+      candycount(array)
+  else:
+    first = False
