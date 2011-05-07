@@ -16,21 +16,31 @@ def performMagick(line, num):
   # input done, lets mix some magicka
   result = []
   for char in spell:
+    # print(result)
     valid = True
     if result:
       # check to see matches in combinations
       tmpComb1 = "%s%s" % (char, result[-1])
       tmpComb2 = "%s%s" % (result[-1], char)
-      for each in combinations:
-        if each[0:2] == tmpComb1 or each[0:2] == tmpComb2:
-          result.append(each[-1])
-          valid = False
+      if valid:
+        for each in combinations:
+          if each[0:2] == tmpComb1 or each[0:2] == tmpComb2:
+            result = result[0:-1]
+            result.append(each[-1])
+            valid = False
           break
-      for each in diametric:
-        if each[0:2] == tmpComb1 or each[0:2] == tmpComb2:
-          result = result[0:-1]
-          valid = False
-          break
+      if valid:
+        for each in diametric:
+          if char == each[0:1]:
+            if each[1:2] in result:
+              valid = False
+              result = []
+              break
+          if char == each[1:2]:
+            if each[0:1] in result:
+              valid = False
+              result = []
+              break
     if valid:
       result.append(char)
 
