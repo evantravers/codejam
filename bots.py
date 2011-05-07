@@ -4,50 +4,61 @@ first = True
 def sciencetobedone(seq):
   # we are going to use a greedy algorithm. Closest match wins
   # reset the bot's positions
-  time   = 0
-  Blue   = 1
-  Orange = 1
-  Bhold  = False
-  Ohold  = False
+  Orange        = 1
+  OrangeHolding = False
+  Otarget       = 0
+  Blue          = 1
+  BlueHolding   = False
+  Btarget       = 0
+  turn          = None
+  time          = 0
+  first         = True
   # print position
   
   # while we have goals left... 
   # we should move to the proper positions. 
   # as things are moved off the sequence we should eventually win
   while seq:
+    # print("Orange(%i): %i, Blue(%i) %i, Time: %i" % (Orange, Otarget, Blue, Btarget, time))
     # each bot needs to have a target position for the start
     # it's possible they'll both need to run forward
-    if Bhold or Ohold:
-      seq = seq[1:]
-      Bhold = False
-      Ohold = False
+    
+    # identify the next goal for Blue
+    for remaining in seq:
+      if remaining[0] == "B":
+        Btarget = remaining[1]
+        break
 
-    # identify whose turn it is
-    currentturn = seq[0][0]
-    currentgoal = seq[0][1]
-
-    # decide Orange's move
-    if Bhold or time == 0:
-      if currentturn == "O":
-        if currentgoal == Orange:
-          # pushing the button
-          Ohold = True
-        elif currentgoal > Orange:
-          Orange += 1
+    if OrangeHolding or first:
+      if Btarget == Blue:
+        # print("push button #", Blue)
+        BlueHolding = True
+        first = False
+        seq = seq[1:]
+      else:
+        if Btarget > Blue:
+          Blue +=1
         else:
-          Orange -= 1
+          Blue -=1
 
-    # decide Blue's move
-    if Ohold or time == 0:
-      if currentturn == "B":
-        if currentgoal == Blue:
-          # pushing the button
-          Bhold = True
-        elif currentgoal > Blue:
-          Blue += 1
+    # identify the next goal for Orange
+    for remaining in seq:
+      if remaining[0] == "O":
+        Otarget = remaining[1]
+        break
+
+    if BlueHolding or first:
+      if Otarget == Orange:
+        # print("push button #", Orange)
+        OrangeHolding = True
+        first = False
+        seq = seq[1:]
+      else:
+        if Otarget > Orange:
+          Orange +=1
         else:
-          Blue -= 1
-
+          Orange -=1
+    
     time +=1
   return time
 
